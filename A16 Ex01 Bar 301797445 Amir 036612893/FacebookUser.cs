@@ -65,6 +65,20 @@ namespace DesignPatternsEx01
             return m_LoggedInUser.PostStatus(i_PostText);
         }
 
+        public Album GetAlbumById(string i_Id)
+        {
+            Album theAlbum = null;
+            foreach (Album album in m_LoggedInUser.Albums)
+            {
+                if (album.Id == i_Id)
+                {
+                    theAlbum = album;
+                    break;
+                }
+            }
+
+            return theAlbum;
+        }
 
         public FacebookObjectCollection<User> Friends
         {

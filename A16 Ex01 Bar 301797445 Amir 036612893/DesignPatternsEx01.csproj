@@ -57,6 +57,10 @@
     <Compile Include="AlbumCover.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AlbumSaver.cs" />
+    <Compile Include="AlbumSaverProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FacebookAlbumApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,8 +68,12 @@
       <DependentUpon>FacebookAlbumApp.cs</DependentUpon>
     </Compile>
     <Compile Include="FacebookUser.cs" />
+    <Compile Include="FolderBrowser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AlbumSaverProgress.resx">
+      <DependentUpon>AlbumSaverProgress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FacebookAlbumApp.resx">
       <DependentUpon>FacebookAlbumApp.cs</DependentUpon>
     </EmbeddedResource>

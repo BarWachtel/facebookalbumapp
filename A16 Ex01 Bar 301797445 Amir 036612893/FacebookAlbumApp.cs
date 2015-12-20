@@ -117,7 +117,7 @@ namespace FacebookApp
 
         private void setAlbumInfoValues()
         {
-            Album album = getAlbumById(m_SelectedAlbumCover.Id);
+            Album album = m_FacebookUser.GetAlbumById(m_SelectedAlbumCover.Id);
             if (album != null)
             {
                 label_albumName.Text = album.Name;
@@ -180,30 +180,9 @@ namespace FacebookApp
 
         private void performSaveAlbum()
         {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-            folderBrowser.ShowDialog();
-            string fileDirectoryPath = folderBrowser.SelectedPath;
-            Album selectedAlbum = null;
-            if (!string.IsNullOrEmpty(fileDirectoryPath))
-            {
-                selectedAlbum = getAlbumById(m_SelectedAlbumCover.Id);
-
-                if (selectedAlbum != null)
-                {
-                    int imgName = 0;
-                    foreach (Photo photo in selectedAlbum.Photos)
-                    {
-                        System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
-                        string photoName =
-                            string.Format(@"{0}{1}{2}_{3}.{4}", fileDirectoryPath, System.IO.Path.DirectorySeparatorChar, selectedAlbum.Name, imgName.ToString(), imageFormat.ToString());
-                        Console.WriteLine("Saving image " + photoName);
-                        photo.ImageNormal.Save(photoName, imageFormat);
-                        imgName++;
-                    }
-                }
-            }
+            AlbumSaver.SaveAlbum(m_SelectedAlbumCover.Id);
         }
-
+        
         private void resetAlbumInfoValues()
         {
             label_albumName.Text = string.Empty;
@@ -212,21 +191,6 @@ namespace FacebookApp
             label_privacySettings.Text = string.Empty;
             label_numPhotos.Text = string.Empty;
             pictureBox_albumCoverPhoto.Image = null;
-        }
-
-        private Album getAlbumById(string i_Id)
-        {
-            Album theAlbum = null;
-            foreach (Album album in m_FacebookUser.Albums)
-            {
-                if (album.Id == i_Id)
-                {
-                    theAlbum = album;
-                    break;
-                }
-            }
-
-            return theAlbum;
         }
 
         private void linkLabelFriends_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
