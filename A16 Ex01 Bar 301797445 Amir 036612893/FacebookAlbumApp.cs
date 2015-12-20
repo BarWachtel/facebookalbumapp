@@ -7,21 +7,26 @@ using System.Text;
 using System.Windows.Forms;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
+using DesignPatternsEx01;
 
 namespace FacebookApp
 {
     public partial class FacebookAlbumApp : Form
     {
-        private User m_LoggedInUser;
+        private FacebookUser m_FacebookUser;
         private AlbumCover m_SelectedAlbumCover;
 
         public FacebookAlbumApp()
         {
             InitializeComponent();
-            enableLoginButton();
+            button_login.Enabled = true;
+            button_login.Visible = true;
+            button_logout.Enabled = true;
+            button_logout.Visible = true;
             enableSaveAlbumButton(false);
             resetAlbumInfoValues();
-            FacebookService.s_CollectionLimit = 1000;
+
+            m_FacebookUser = FacebookUser.GetInstance();
         }
 
         private void enableSaveAlbumButton(bool i_Value = true)
@@ -36,40 +41,48 @@ namespace FacebookApp
 
         private void initAndLogin()
         {
-            LoginResult result = FacebookService.Login("419917864886078", "user_about_me", "user_friends", "user_posts", "user_photos");
-            if (!string.IsNullOrEmpty(result.AccessToken))
+            m_FacebookUser.Login((success) =>
             {
-                m_LoggedInUser = result.LoggedInUser;
-                displayInitialLoggedInUserScreen();
-            }
-            else
-            {
-                MessageBox.Show(result.ErrorMessage);
-            }
+                if (success)
+                {
+                    displayInitialLoggedInUserScreen();
+                }
+                else
+                {
+                    MessageBox.Show("Error logging in");
+                }
+            });
         }
 
         private void displayInitialLoggedInUserScreen()
         {
-            pictureBox_profilePicture.LoadAsync(m_LoggedInUser.PictureLargeURL);
+            pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
             pictureBox_profilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
-            label_userName.Text = getUserFullName();
+            label_userName.Invoke(new Action(() =>
+            {
+                label_userName.Text = getUserFullName();
+            })
+            );
 
-            foreach (Album album in m_LoggedInUser.Albums)
+            foreach (Album album in m_FacebookUser.Albums)
             {
                 AlbumCover albumCover = new AlbumCover(album.Name, album.PictureAlbumURL, album.Id);
-                flowLayout_albumPhotos.Controls.Add(albumCover);
-                albumCover.LoadImage();
-                albumCover.Click += new EventHandler(albumCoverSelected);               
+                flowLayout_albumPhotos.Invoke(new Action(() =>
+                    {
+                        flowLayout_albumPhotos.Controls.Add(albumCover);
+                        albumCover.LoadImage();
+                    }));
+                albumCover.Click += new EventHandler(albumCoverSelected);
             }
 
             enableLoginButton(false);
         }
 
-        private void albumCoverSelected(object sender, EventArgs e) 
+        private void albumCoverSelected(object sender, EventArgs e)
         {
             AlbumCover albumCover = sender as AlbumCover;
 
-            if (m_SelectedAlbumCover != null) 
+            if (m_SelectedAlbumCover != null)
             {
                 if (m_SelectedAlbumCover != albumCover)
                 {
@@ -126,15 +139,22 @@ namespace FacebookApp
 
         private string getUserFullName()
         {
-            return string.Format("{0} {1}", m_LoggedInUser.FirstName, m_LoggedInUser.LastName);
+            return string.Format("{0} {1}", m_FacebookUser.FirstName, m_FacebookUser.LastName);
         }
 
         private void enableLoginButton(bool enable = true)
         {
-            button_login.Enabled = enable;
-            button_login.Visible = enable;
-            button_logout.Enabled = !enable;
-            button_logout.Visible = !enable;
+            button_login.Invoke(new Action(() =>
+                {
+                    button_login.Enabled = enable;
+                    button_login.Visible = enable;
+                }));
+
+            button_logout.Invoke(new Action(() =>
+                {
+                    button_logout.Enabled = !enable;
+                    button_logout.Visible = !enable;
+                }));
         }
 
         private void logout_button_Click(object sender, EventArgs e)
@@ -149,7 +169,7 @@ namespace FacebookApp
 
         private void logoutCallback()
         {
-            m_LoggedInUser = null;
+            m_FacebookUser = null;
             displayInitialLoggedOutUserScreen();
         }
 
@@ -197,7 +217,7 @@ namespace FacebookApp
         private Album getAlbumById(string i_Id)
         {
             Album theAlbum = null;
-            foreach (Album album in m_LoggedInUser.Albums)
+            foreach (Album album in m_FacebookUser.Albums)
             {
                 if (album.Id == i_Id)
                 {
@@ -218,13 +238,13 @@ namespace FacebookApp
         {
             listBoxFriends.Items.Clear();
             listBoxFriends.DisplayMember = "Name";
-            foreach (User friend in m_LoggedInUser.Friends)
+            foreach (User friend in m_FacebookUser.Friends)
             {
                 listBoxFriends.Items.Add(friend);
                 friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
             }
 
-            if (m_LoggedInUser.Friends.Count == 0)
+            if (m_FacebookUser.Friends.Count == 0)
             {
                 MessageBox.Show("No Friends to retrieve :(");
             }
@@ -244,7 +264,7 @@ namespace FacebookApp
 
         private void buttonPostStatus_Click(object sender, EventArgs e)
         {
-            Status postedStatus = m_LoggedInUser.PostStatus(textBoxPost.Text);
+            Status postedStatus = m_FacebookUser.PostStatus(textBoxPost.Text);
             MessageBox.Show("Status Posted!");
             textBoxPost.Text = string.Empty;
         }
@@ -284,12 +304,12 @@ namespace FacebookApp
         {
             listBoxEvents.Items.Clear();
             listBoxEvents.DisplayMember = "Name";
-            foreach (Event fbEvent in m_LoggedInUser.Events)
+            foreach (Event fbEvent in m_FacebookUser.Events)
             {
-                listBoxEvents.Items.Add(fbEvent);                
+                listBoxEvents.Items.Add(fbEvent);
             }
 
-            if (m_LoggedInUser.Events.Count == 0)
+            if (m_FacebookUser.Events.Count == 0)
             {
                 MessageBox.Show("No Events to retrieve");
             }
@@ -298,11 +318,11 @@ namespace FacebookApp
         private void linkLabelPosts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             fetchPosts();
-        }       
- 
+        }
+
         private void fetchPosts()
         {
-            foreach (Post post in m_LoggedInUser.Posts)
+            foreach (Post post in m_FacebookUser.Posts)
             {
                 if (post.Message != null)
                 {
@@ -318,10 +338,10 @@ namespace FacebookApp
                 }
             }
 
-            if (m_LoggedInUser.Posts.Count == 0)
+            if (m_FacebookUser.Posts.Count == 0)
             {
                 MessageBox.Show("No Posts to retrieve :(");
             }
-        }      
+        }
     }
 }
