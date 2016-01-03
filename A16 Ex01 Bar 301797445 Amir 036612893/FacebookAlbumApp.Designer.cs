@@ -29,15 +29,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Label birthdayLabel;
+            System.Windows.Forms.Label emailLabel;
+            System.Windows.Forms.Label linkLabel;
+            System.Windows.Forms.Label nameLabel;
+            System.Windows.Forms.Label updateTimeLabel;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FacebookAlbumApp));
             this.label_userName = new System.Windows.Forms.Label();
             this.tabControl_app = new System.Windows.Forms.TabControl();
             this.tabPage_loginPage = new System.Windows.Forms.TabPage();
+            this.birthdayTextBox = new System.Windows.Forms.TextBox();
+            this.userBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.emailTextBox = new System.Windows.Forms.TextBox();
+            this.imageNormalPictureBox = new System.Windows.Forms.PictureBox();
+            this.linkLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.updateTimeDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.linkLabelPosts = new System.Windows.Forms.LinkLabel();
             this.listBoxPosts = new System.Windows.Forms.ListBox();
             this.linkLabelEvents = new System.Windows.Forms.LinkLabel();
-            this.buttonSortFriends = new System.Windows.Forms.Button();
-            this.pictureBoxFriend = new System.Windows.Forms.PictureBox();
             this.listBoxEvents = new System.Windows.Forms.ListBox();
             this.listBoxFriends = new System.Windows.Forms.ListBox();
             this.linkLabelFriends = new System.Windows.Forms.LinkLabel();
@@ -63,14 +74,65 @@
             this.label_albumName = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayout_albumPhotos = new System.Windows.Forms.FlowLayoutPanel();
+            birthdayLabel = new System.Windows.Forms.Label();
+            emailLabel = new System.Windows.Forms.Label();
+            linkLabel = new System.Windows.Forms.Label();
+            nameLabel = new System.Windows.Forms.Label();
+            updateTimeLabel = new System.Windows.Forms.Label();
             this.tabControl_app.SuspendLayout();
             this.tabPage_loginPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageNormalPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_profilePicture)).BeginInit();
             this.tabPage_albumPage.SuspendLayout();
             this.groupBox_albumInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_albumCoverPhoto)).BeginInit();
             this.SuspendLayout();
+            // 
+            // birthdayLabel
+            // 
+            birthdayLabel.AutoSize = true;
+            birthdayLabel.Location = new System.Drawing.Point(327, 246);
+            birthdayLabel.Name = "birthdayLabel";
+            birthdayLabel.Size = new System.Drawing.Size(64, 17);
+            birthdayLabel.TabIndex = 21;
+            birthdayLabel.Text = "Birthday:";
+            // 
+            // emailLabel
+            // 
+            emailLabel.AutoSize = true;
+            emailLabel.Location = new System.Drawing.Point(327, 274);
+            emailLabel.Name = "emailLabel";
+            emailLabel.Size = new System.Drawing.Size(46, 17);
+            emailLabel.TabIndex = 23;
+            emailLabel.Text = "Email:";
+            // 
+            // linkLabel
+            // 
+            linkLabel.AutoSize = true;
+            linkLabel.Location = new System.Drawing.Point(327, 297);
+            linkLabel.Name = "linkLabel";
+            linkLabel.Size = new System.Drawing.Size(38, 17);
+            linkLabel.TabIndex = 27;
+            linkLabel.Text = "Link:";
+            // 
+            // nameLabel
+            // 
+            nameLabel.AutoSize = true;
+            nameLabel.Location = new System.Drawing.Point(327, 326);
+            nameLabel.Name = "nameLabel";
+            nameLabel.Size = new System.Drawing.Size(49, 17);
+            nameLabel.TabIndex = 29;
+            nameLabel.Text = "Name:";
+            // 
+            // updateTimeLabel
+            // 
+            updateTimeLabel.AutoSize = true;
+            updateTimeLabel.Location = new System.Drawing.Point(327, 355);
+            updateTimeLabel.Name = "updateTimeLabel";
+            updateTimeLabel.Size = new System.Drawing.Size(93, 17);
+            updateTimeLabel.TabIndex = 31;
+            updateTimeLabel.Text = "Update Time:";
             // 
             // label_userName
             // 
@@ -92,11 +154,21 @@
             // 
             // tabPage_loginPage
             // 
+            this.tabPage_loginPage.AutoScroll = true;
+            this.tabPage_loginPage.Controls.Add(birthdayLabel);
+            this.tabPage_loginPage.Controls.Add(this.birthdayTextBox);
+            this.tabPage_loginPage.Controls.Add(emailLabel);
+            this.tabPage_loginPage.Controls.Add(this.emailTextBox);
+            this.tabPage_loginPage.Controls.Add(this.imageNormalPictureBox);
+            this.tabPage_loginPage.Controls.Add(linkLabel);
+            this.tabPage_loginPage.Controls.Add(this.linkLinkLabel);
+            this.tabPage_loginPage.Controls.Add(nameLabel);
+            this.tabPage_loginPage.Controls.Add(this.nameTextBox);
+            this.tabPage_loginPage.Controls.Add(updateTimeLabel);
+            this.tabPage_loginPage.Controls.Add(this.updateTimeDateTimePicker);
             this.tabPage_loginPage.Controls.Add(this.linkLabelPosts);
             this.tabPage_loginPage.Controls.Add(this.listBoxPosts);
             this.tabPage_loginPage.Controls.Add(this.linkLabelEvents);
-            this.tabPage_loginPage.Controls.Add(this.buttonSortFriends);
-            this.tabPage_loginPage.Controls.Add(this.pictureBoxFriend);
             this.tabPage_loginPage.Controls.Add(this.listBoxEvents);
             this.tabPage_loginPage.Controls.Add(this.listBoxFriends);
             this.tabPage_loginPage.Controls.Add(this.linkLabelFriends);
@@ -113,6 +185,61 @@
             this.tabPage_loginPage.TabIndex = 0;
             this.tabPage_loginPage.Text = "Login & Basic Functions";
             this.tabPage_loginPage.UseVisualStyleBackColor = true;
+            // 
+            // birthdayTextBox
+            // 
+            this.birthdayTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Birthday", true));
+            this.birthdayTextBox.Location = new System.Drawing.Point(432, 243);
+            this.birthdayTextBox.Name = "birthdayTextBox";
+            this.birthdayTextBox.Size = new System.Drawing.Size(128, 22);
+            this.birthdayTextBox.TabIndex = 22;
+            // 
+            // userBindingSource
+            // 
+            this.userBindingSource.DataSource = typeof(FacebookWrapper.ObjectModel.User);
+            // 
+            // emailTextBox
+            // 
+            this.emailTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Email", true));
+            this.emailTextBox.Location = new System.Drawing.Point(432, 271);
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.Size = new System.Drawing.Size(128, 22);
+            this.emailTextBox.TabIndex = 24;
+            // 
+            // imageNormalPictureBox
+            // 
+            this.imageNormalPictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.userBindingSource, "ImageNormal", true));
+            this.imageNormalPictureBox.Location = new System.Drawing.Point(329, 129);
+            this.imageNormalPictureBox.Name = "imageNormalPictureBox";
+            this.imageNormalPictureBox.Size = new System.Drawing.Size(152, 108);
+            this.imageNormalPictureBox.TabIndex = 26;
+            this.imageNormalPictureBox.TabStop = false;
+            // 
+            // linkLinkLabel
+            // 
+            this.linkLinkLabel.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Link", true));
+            this.linkLinkLabel.Location = new System.Drawing.Point(432, 297);
+            this.linkLinkLabel.Name = "linkLinkLabel";
+            this.linkLinkLabel.Size = new System.Drawing.Size(128, 23);
+            this.linkLinkLabel.TabIndex = 28;
+            this.linkLinkLabel.TabStop = true;
+            this.linkLinkLabel.Text = "linkLabel1";
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.userBindingSource, "Name", true));
+            this.nameTextBox.Location = new System.Drawing.Point(432, 323);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(128, 22);
+            this.nameTextBox.TabIndex = 30;
+            // 
+            // updateTimeDateTimePicker
+            // 
+            this.updateTimeDateTimePicker.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.userBindingSource, "UpdateTime", true));
+            this.updateTimeDateTimePicker.Location = new System.Drawing.Point(432, 351);
+            this.updateTimeDateTimePicker.Name = "updateTimeDateTimePicker";
+            this.updateTimeDateTimePicker.Size = new System.Drawing.Size(128, 22);
+            this.updateTimeDateTimePicker.TabIndex = 32;
             // 
             // linkLabelPosts
             // 
@@ -137,7 +264,7 @@
             // linkLabelEvents
             // 
             this.linkLabelEvents.AutoSize = true;
-            this.linkLabelEvents.Location = new System.Drawing.Point(574, 106);
+            this.linkLabelEvents.Location = new System.Drawing.Point(667, 109);
             this.linkLabelEvents.Name = "linkLabelEvents";
             this.linkLabelEvents.Size = new System.Drawing.Size(90, 17);
             this.linkLabelEvents.TabIndex = 19;
@@ -145,47 +272,30 @@
             this.linkLabelEvents.Text = "Fetch Events";
             this.linkLabelEvents.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelEvents_LinkClicked);
             // 
-            // buttonSortFriends
-            // 
-            this.buttonSortFriends.Location = new System.Drawing.Point(205, 315);
-            this.buttonSortFriends.Name = "buttonSortFriends";
-            this.buttonSortFriends.Size = new System.Drawing.Size(96, 58);
-            this.buttonSortFriends.TabIndex = 18;
-            this.buttonSortFriends.Text = "Sort Friends By Name";
-            this.buttonSortFriends.UseVisualStyleBackColor = true;
-            this.buttonSortFriends.Click += new System.EventHandler(this.buttonSortFriends_Click);
-            // 
-            // pictureBoxFriend
-            // 
-            this.pictureBoxFriend.Location = new System.Drawing.Point(433, 129);
-            this.pictureBoxFriend.Name = "pictureBoxFriend";
-            this.pictureBoxFriend.Size = new System.Drawing.Size(119, 119);
-            this.pictureBoxFriend.TabIndex = 17;
-            this.pictureBoxFriend.TabStop = false;
-            // 
             // listBoxEvents
             // 
             this.listBoxEvents.FormattingEnabled = true;
             this.listBoxEvents.ItemHeight = 16;
-            this.listBoxEvents.Location = new System.Drawing.Point(574, 129);
+            this.listBoxEvents.Location = new System.Drawing.Point(670, 129);
             this.listBoxEvents.Name = "listBoxEvents";
             this.listBoxEvents.Size = new System.Drawing.Size(231, 244);
             this.listBoxEvents.TabIndex = 16;
             // 
             // listBoxFriends
             // 
+            this.listBoxFriends.DataSource = this.userBindingSource;
+            this.listBoxFriends.DisplayMember = "Name";
             this.listBoxFriends.FormattingEnabled = true;
             this.listBoxFriends.ItemHeight = 16;
-            this.listBoxFriends.Location = new System.Drawing.Point(307, 129);
+            this.listBoxFriends.Location = new System.Drawing.Point(203, 129);
             this.listBoxFriends.Name = "listBoxFriends";
             this.listBoxFriends.Size = new System.Drawing.Size(120, 244);
             this.listBoxFriends.TabIndex = 15;
-            this.listBoxFriends.SelectedIndexChanged += new System.EventHandler(this.listBoxFriends_SelectedIndexChanged);
             // 
             // linkLabelFriends
             // 
             this.linkLabelFriends.AutoSize = true;
-            this.linkLabelFriends.Location = new System.Drawing.Point(307, 109);
+            this.linkLabelFriends.Location = new System.Drawing.Point(203, 109);
             this.linkLabelFriends.Name = "linkLabelFriends";
             this.linkLabelFriends.Size = new System.Drawing.Size(120, 17);
             this.linkLabelFriends.TabIndex = 14;
@@ -196,9 +306,9 @@
             // buttonPostStatus
             // 
             this.buttonPostStatus.Enabled = false;
-            this.buttonPostStatus.Location = new System.Drawing.Point(203, 53);
+            this.buttonPostStatus.Location = new System.Drawing.Point(201, 31);
             this.buttonPostStatus.Name = "buttonPostStatus";
-            this.buttonPostStatus.Size = new System.Drawing.Size(95, 34);
+            this.buttonPostStatus.Size = new System.Drawing.Size(95, 22);
             this.buttonPostStatus.TabIndex = 11;
             this.buttonPostStatus.Text = "Post";
             this.buttonPostStatus.UseVisualStyleBackColor = true;
@@ -218,7 +328,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label2.Location = new System.Drawing.Point(202, 33);
+            this.label2.Location = new System.Drawing.Point(200, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(96, 17);
             this.label2.TabIndex = 9;
@@ -440,7 +550,8 @@
             this.tabControl_app.ResumeLayout(false);
             this.tabPage_loginPage.ResumeLayout(false);
             this.tabPage_loginPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageNormalPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_profilePicture)).EndInit();
             this.tabPage_albumPage.ResumeLayout(false);
             this.tabPage_albumPage.PerformLayout();
@@ -479,13 +590,18 @@
         private System.Windows.Forms.Button buttonPostStatus;
         private System.Windows.Forms.TextBox textBoxPost;
         private System.Windows.Forms.LinkLabel linkLabelFriends;
-        private System.Windows.Forms.PictureBox pictureBoxFriend;
         private System.Windows.Forms.ListBox listBoxEvents;
         private System.Windows.Forms.ListBox listBoxFriends;
-        private System.Windows.Forms.Button buttonSortFriends;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.LinkLabel linkLabelEvents;
         private System.Windows.Forms.LinkLabel linkLabelPosts;
         private System.Windows.Forms.ListBox listBoxPosts;
+        private System.Windows.Forms.BindingSource userBindingSource;
+        private System.Windows.Forms.TextBox birthdayTextBox;
+        private System.Windows.Forms.TextBox emailTextBox;
+        private System.Windows.Forms.PictureBox imageNormalPictureBox;
+        private System.Windows.Forms.LinkLabel linkLinkLabel;
+        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.DateTimePicker updateTimeDateTimePicker;
     }
 }
