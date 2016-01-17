@@ -29,15 +29,7 @@ namespace FacebookApp
             m_FacebookUser = FacebookUser.GetInstance();
         }
 
-        private void enableSaveAlbumButton(bool i_Value = true)
-        {
-            button_saveAlbums.Enabled = i_Value;
-        }
-
-        private void login_button_Click(object sender, EventArgs e)
-        {
-            initAndLogin();
-        }
+        #region User Login & Logout
 
         private void initAndLogin()
         {
@@ -54,13 +46,34 @@ namespace FacebookApp
             });
         }
 
+        private void displayInitialLoggedOutUserScreen()
+        {
+            pictureBox_profilePicture.Image = null;
+            label_userName.Text = string.Empty;
+            enableLoginButton();
+        }
+
+        private void enableLoginButton(bool enable = true)
+        {
+            button_login.Invoke(new Action(() =>
+            {
+                button_login.Enabled = enable;
+                button_login.Visible = enable;
+            }));
+
+            button_logout.Invoke(new Action(() =>
+            {
+                button_logout.Enabled = !enable;
+                button_logout.Visible = !enable;
+            }));
+        }
+
         private void displayInitialLoggedInUserScreen()
         {
-            //pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
             pictureBox_profilePicture.Invoke(new Action(() =>
             {
-                    pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
-                })
+                pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
+            })
                 );
             pictureBox_profilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
             label_userName.Invoke(new Action(() =>
@@ -69,18 +82,48 @@ namespace FacebookApp
             })
             );
 
+            loadAlbumCovers();
+
+            enableLoginButton(false);
+        }
+
+        private string getUserFullName()
+        {
+            return string.Format("{0} {1}", m_FacebookUser.FirstName, m_FacebookUser.LastName);
+        }
+
+        private void performUserLogout()
+        {
+            FacebookService.Logout(logoutCallback);
+        }
+
+        private void logoutCallback()
+        {
+            m_FacebookUser = null;
+            displayInitialLoggedOutUserScreen();
+        }
+
+        #endregion
+
+        #region Album Related Actions
+
+        private void loadAlbumCovers()
+        {
             foreach (Album album in m_FacebookUser.Albums)
             {
                 AlbumCover albumCover = new AlbumCover(album.Name, album.PictureAlbumURL, album.Id);
                 flowLayout_albumPhotos.Invoke(new Action(() =>
-                    {
-                        flowLayout_albumPhotos.Controls.Add(albumCover);
-                        albumCover.LoadImage();
-                    }));
+                {
+                    flowLayout_albumPhotos.Controls.Add(albumCover);
+                    albumCover.LoadImage();
+                }));
                 albumCover.Click += new EventHandler(albumCoverSelected);
             }
+        }
 
-            enableLoginButton(false);
+        private void enableSaveAlbumButton(bool i_Value = true)
+        {
+            button_saveAlbums.Enabled = i_Value;
         }
 
         private void albumCoverSelected(object sender, EventArgs e)
@@ -135,54 +178,6 @@ namespace FacebookApp
             }
         }
 
-        private void displayInitialLoggedOutUserScreen()
-        {
-            pictureBox_profilePicture.Image = null;
-            label_userName.Text = string.Empty;
-            enableLoginButton();
-        }
-
-        private string getUserFullName()
-        {
-            return string.Format("{0} {1}", m_FacebookUser.FirstName, m_FacebookUser.LastName);
-        }
-
-        private void enableLoginButton(bool enable = true)
-        {
-            button_login.Invoke(new Action(() =>
-                {
-                    button_login.Enabled = enable;
-                    button_login.Visible = enable;
-                }));
-
-            button_logout.Invoke(new Action(() =>
-                {
-                    button_logout.Enabled = !enable;
-                    button_logout.Visible = !enable;
-                }));
-        }
-
-        private void logout_button_Click(object sender, EventArgs e)
-        {
-            performUserLogout();
-        }
-
-        private void performUserLogout()
-        {
-            FacebookService.Logout(logoutCallback);
-        }
-
-        private void logoutCallback()
-        {
-            m_FacebookUser = null;
-            displayInitialLoggedOutUserScreen();
-        }
-
-        private void saveAlbums_Button_Click(object sender, EventArgs e)
-        {
-            performSaveAlbum();
-        }
-
         private void performSaveAlbum()
         {
             AlbumSaver.SaveAlbum(m_SelectedAlbumCover.Id);
@@ -198,25 +193,12 @@ namespace FacebookApp
             pictureBox_albumCoverPhoto.Image = null;
         }
 
+        #endregion
+
+        #region UI Interaction
         private void linkLabelFriends_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             fetchFriendsList();
-        }
-
-        private void fetchFriendsList()
-        {
-            //listBoxFriends.Items.Clear();
-            //listBoxFriends.DisplayMember = "Name";
-            //foreach (User friend in m_FacebookUser.Friends)
-            //{
-            //    listBoxFriends.Items.Add(friend);
-            //    friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
-            //}
-            userBindingSource.DataSource = m_FacebookUser.Friends;
-            if (m_FacebookUser.Friends.Count == 0)
-            {
-                MessageBox.Show("No Friends to retrieve :(");
-            }
         }
 
         private void textBoxPost_TextChanged(object sender, EventArgs e)
@@ -236,34 +218,36 @@ namespace FacebookApp
             Status postedStatus = m_FacebookUser.PostStatus(textBoxPost.Text);
             MessageBox.Show("Status Posted!");
             textBoxPost.Text = string.Empty;
-        }       
+        }
 
-        //private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    displaySelectedFriend();
-        //}
+        private void saveAlbums_Button_Click(object sender, EventArgs e)
+        {
+            performSaveAlbum();
+        }
 
-        //private void displaySelectedFriend()
-        //{
-        //    if (listBoxFriends.SelectedItems.Count == 1)
-        //    {
-        //        User selectedFriend = listBoxFriends.SelectedItem as User;
-        //        if (selectedFriend.PictureNormalURL != null)
-        //        {
-        //            pictureBoxFriend.LoadAsync(selectedFriend.PictureNormalURL);
-        //        }
-        //        else
-        //        {
-        //            pictureBox_profilePicture.Image = pictureBox_profilePicture.ErrorImage;
-        //        }
-        //    }
-        //}
+        private void login_button_Click(object sender, EventArgs e)
+        {
+            initAndLogin();
+        }
+
+
+        private void logout_button_Click(object sender, EventArgs e)
+        {
+            performUserLogout();
+        }
+
+        private void linkLabelPosts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            fetchPosts();
+        }
 
         private void linkLabelEvents_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             fetchEvents();
         }
+        #endregion
 
+        #region General Facebook Capabilities
         private void fetchEvents()
         {
             listBoxEvents.Items.Clear();
@@ -277,11 +261,6 @@ namespace FacebookApp
             {
                 MessageBox.Show("No Events to retrieve");
             }
-        }
-
-        private void linkLabelPosts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            fetchPosts();
         }
 
         private void fetchPosts()
@@ -307,5 +286,23 @@ namespace FacebookApp
                 MessageBox.Show("No Posts to retrieve :(");
             }
         }
+
+        private void fetchFriendsList()
+        {
+            //listBoxFriends.Items.Clear();
+            //listBoxFriends.DisplayMember = "Name";
+            //foreach (User friend in m_FacebookUser.Friends)
+            //{
+            //    listBoxFriends.Items.Add(friend);
+            //    friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
+            //}
+            userBindingSource.DataSource = m_FacebookUser.Friends;
+            if (m_FacebookUser.Friends.Count == 0)
+            {
+                MessageBox.Show("No Friends to retrieve :(");
+            }
+        }
+
+        #endregion
     }
 }
