@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace DesignPatternsEx01
 {
-    class FolderBrowser
+    public class FolderBrowser
     {
         public static string SelectOrCreateFolder()
         {

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FacebookApp.FacebookAlbumApp">
+    <Position X="0.5" Y="0.75" Width="2.25" />
+    <Members>
+      <Method Name="albumCoverSelected" Hidden="true" />
+      <Method Name="albumIsSelected" Hidden="true" />
+      <Field Name="birthdayTextBox" Hidden="true" />
+      <Field Name="button_login" Hidden="true" />
+      <Field Name="button_logout" Hidden="true" />
+      <Field Name="button_saveAlbums" Hidden="true" />
+      <Field Name="buttonPostStatus" Hidden="true" />
+      <Method Name="buttonPostStatus_Click" Hidden="true" />
+      <Field Name="buttonSortFriends" Hidden="true" />
+      <Method Name="buttonSortFriends_Click" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Method Name="displayInitialLoggedInUserScreen" Hidden="true" />
+      <Method Name="displayInitialLoggedOutUserScreen" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="emailTextBox" Hidden="true" />
+      <Method Name="enableLoginButton" Hidden="true" />
+      <Method Name="enableSaveAlbumButton" Hidden="true" />
+      <Method Name="FacebookAlbumApp" Hidden="true" />
+      <Method Name="fetchEvents" Hidden="true" />
+      <Method Name="fetchFriendsList" Hidden="true" />
+      <Method Name="fetchPosts" Hidden="true" />
+      <Field Name="flowLayout_albumPhotos" Hidden="true" />
+      <Method Name="getUserFullName" Hidden="true" />
+      <Field Name="groupBox_albumInfo" Hidden="true" />
+      <Field Name="imageNormalPictureBox" Hidden="true" />
+      <Method Name="initAndLogin" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="label_albumName" Hidden="true" />
+      <Field Name="label_description" Hidden="true" />
+      <Field Name="label_lastUpdated" Hidden="true" />
+      <Field Name="label_numPhotos" Hidden="true" />
+      <Field Name="label_privacySettings" Hidden="true" />
+      <Field Name="label_userName" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="label2" Hidden="true" />
+      <Field Name="label3" Hidden="true" />
+      <Field Name="label4" Hidden="true" />
+      <Field Name="label5" Hidden="true" />
+      <Field Name="label6" Hidden="true" />
+      <Field Name="label9" Hidden="true" />
+      <Field Name="linkLabelEvents" Hidden="true" />
+      <Method Name="linkLabelEvents_LinkClicked" Hidden="true" />
+      <Field Name="linkLabelFriends" Hidden="true" />
+      <Method Name="linkLabelFriends_LinkClicked" Hidden="true" />
+      <Field Name="linkLabelPosts" Hidden="true" />
+      <Method Name="linkLabelPosts_LinkClicked" Hidden="true" />
+      <Field Name="linkLinkLabel" Hidden="true" />
+      <Field Name="listBoxEvents" Hidden="true" />
+      <Field Name="listBoxFriends" Hidden="true" />
+      <Field Name="listBoxPosts" Hidden="true" />
+      <Method Name="login_button_Click" Hidden="true" />
+      <Method Name="logout_button_Click" Hidden="true" />
+      <Method Name="logoutCallback" Hidden="true" />
+      <Field Name="m_FacebookUser" Hidden="true" />
+      <Field Name="m_SelectedAlbumCover" Hidden="true" />
+      <Field Name="nameTextBox" Hidden="true" />
+      <Method Name="performSaveAlbum" Hidden="true" />
+      <Method Name="performUserLogout" Hidden="true" />
+      <Field Name="pictureBox_albumCoverPhoto" Hidden="true" />
+      <Field Name="pictureBox_profilePicture" Hidden="true" />
+      <Method Name="resetAlbumInfoValues" Hidden="true" />
+      <Field Name="tabControl_app" Hidden="true" />
+      <Field Name="tabPage_albumPage" Hidden="true" />
+      <Field Name="tabPage_loginPage" Hidden="true" />
+      <Field Name="textBoxPost" Hidden="true" />
+      <Method Name="textBoxPost_TextChanged" Hidden="true" />
+      <Field Name="updateTimeDateTimePicker" Hidden="true" />
+      <Field Name="userBindingSource" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>iDAAIBIkBDGACRABQFCBIgBSGFAFIQEoQKBMAzAHDAA=</HashCode>
+      <FileName>FacebookAlbumApp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DesignPatternsEx01.AlbumSaver">
+    <Position X="3.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AlbumSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DesignPatternsEx01.AlbumSaverProgress" Collapsed="true">
+    <Position X="6" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAAAEAgIEQBAACAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AlbumSaverProgress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DesignPatternsEx01.FacebookUser" Collapsed="true">
+    <Position X="6" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAFAAAAAAABAAAAAIABkAAAAAoAACQCAAAAAg=</HashCode>
+      <FileName>FacebookUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DesignPatternsEx01.FolderBrowser" Collapsed="true">
+    <Position X="6" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FolderBrowser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

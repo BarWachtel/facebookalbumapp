@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+ 
 
 namespace DesignPatternsEx01
 {
-    class AlbumSaver
+    public class AlbumSaver
     {
         public static void SaveAlbum(string i_AlbumId)
         {
@@ -16,7 +17,7 @@ namespace DesignPatternsEx01
 
             Album selectedAlbum = null;
             if (!string.IsNullOrEmpty(fileDirectoryPath))
-            {
+            {               
                 selectedAlbum = FacebookUser.GetInstance().GetAlbumById(i_AlbumId);
 
                 if (selectedAlbum != null)

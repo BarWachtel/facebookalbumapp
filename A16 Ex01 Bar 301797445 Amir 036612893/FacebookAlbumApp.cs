@@ -56,7 +56,12 @@ namespace FacebookApp
 
         private void displayInitialLoggedInUserScreen()
         {
-            pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
+            //pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
+            pictureBox_profilePicture.Invoke(new Action(() =>
+            {
+                    pictureBox_profilePicture.LoadAsync(m_FacebookUser.PictureLargeURL);
+                })
+                );
             pictureBox_profilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
             label_userName.Invoke(new Action(() =>
             {
@@ -182,7 +187,7 @@ namespace FacebookApp
         {
             AlbumSaver.SaveAlbum(m_SelectedAlbumCover.Id);
         }
-        
+
         private void resetAlbumInfoValues()
         {
             label_albumName.Text = string.Empty;
@@ -200,14 +205,14 @@ namespace FacebookApp
 
         private void fetchFriendsList()
         {
-            listBoxFriends.Items.Clear();
-            listBoxFriends.DisplayMember = "Name";
-            foreach (User friend in m_FacebookUser.Friends)
-            {
-                listBoxFriends.Items.Add(friend);
-                friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
-            }
-
+            //listBoxFriends.Items.Clear();
+            //listBoxFriends.DisplayMember = "Name";
+            //foreach (User friend in m_FacebookUser.Friends)
+            //{
+            //    listBoxFriends.Items.Add(friend);
+            //    friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
+            //}
+            userBindingSource.DataSource = m_FacebookUser.Friends;
             if (m_FacebookUser.Friends.Count == 0)
             {
                 MessageBox.Show("No Friends to retrieve :(");
@@ -231,33 +236,28 @@ namespace FacebookApp
             Status postedStatus = m_FacebookUser.PostStatus(textBoxPost.Text);
             MessageBox.Show("Status Posted!");
             textBoxPost.Text = string.Empty;
-        }
+        }       
 
-        private void buttonSortFriends_Click(object sender, EventArgs e)
-        {
-            listBoxFriends.Sorted = true;
-        }
+        //private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    displaySelectedFriend();
+        //}
 
-        private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            displaySelectedFriend();
-        }
-
-        private void displaySelectedFriend()
-        {
-            if (listBoxFriends.SelectedItems.Count == 1)
-            {
-                User selectedFriend = listBoxFriends.SelectedItem as User;
-                if (selectedFriend.PictureNormalURL != null)
-                {
-                    pictureBoxFriend.LoadAsync(selectedFriend.PictureNormalURL);
-                }
-                else
-                {
-                    pictureBox_profilePicture.Image = pictureBox_profilePicture.ErrorImage;
-                }
-            }
-        }
+        //private void displaySelectedFriend()
+        //{
+        //    if (listBoxFriends.SelectedItems.Count == 1)
+        //    {
+        //        User selectedFriend = listBoxFriends.SelectedItem as User;
+        //        if (selectedFriend.PictureNormalURL != null)
+        //        {
+        //            pictureBoxFriend.LoadAsync(selectedFriend.PictureNormalURL);
+        //        }
+        //        else
+        //        {
+        //            pictureBox_profilePicture.Image = pictureBox_profilePicture.ErrorImage;
+        //        }
+        //    }
+        //}
 
         private void linkLabelEvents_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

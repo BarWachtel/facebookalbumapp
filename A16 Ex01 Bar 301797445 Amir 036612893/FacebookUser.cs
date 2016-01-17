@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace DesignPatternsEx01
 {
-    class FacebookUser
+    public class FacebookUser
     {
         private User m_LoggedInUser;
         private static FacebookUser m_Instance;
@@ -41,7 +41,7 @@ namespace DesignPatternsEx01
             {
                 Thread thread = new Thread(() =>
                 {
-                    LoginResult result = FacebookService.Login("419917864886078", "user_about_me", "user_friends", "user_posts", "user_photos");
+                    LoginResult result = FacebookService.Login("419917864886078", "user_about_me", "user_friends", "user_posts", "user_photos", "email", "user_birthday");
                     bool success = false;
                     if (!string.IsNullOrEmpty(result.AccessToken))
                     {
