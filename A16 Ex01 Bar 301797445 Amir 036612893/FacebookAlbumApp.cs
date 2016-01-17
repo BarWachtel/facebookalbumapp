@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using DesignPatternsEx01;
+using System.Linq;
 
 namespace FacebookApp
 {
@@ -27,23 +28,27 @@ namespace FacebookApp
             resetAlbumInfoValues();
 
             m_FacebookUser = FacebookUser.GetInstance();
+            m_FacebookUser.AddLoginObserver(loginScreenObserver);
+            m_FacebookUser.AddLoginObserver(albumScreenObserver);
         }
 
         #region User Login & Logout
 
         private void initAndLogin()
         {
-            m_FacebookUser.Login((success) =>
+            m_FacebookUser.Login();
+        }
+
+        private void loginScreenObserver(bool i_Success)
+        {
+            if (i_Success)
             {
-                if (success)
-                {
-                    displayInitialLoggedInUserScreen();
-                }
-                else
-                {
-                    MessageBox.Show("Error logging in");
-                }
-            });
+                displayInitialLoggedInUserScreen();
+            }
+            else
+            {
+                MessageBox.Show("Error logging in");
+            }
         }
 
         private void displayInitialLoggedOutUserScreen()
@@ -82,9 +87,15 @@ namespace FacebookApp
             })
             );
 
-            loadAlbumCovers();
-
             enableLoginButton(false);
+        }
+
+        private void albumScreenObserver(bool i_Success)
+        {
+            if (i_Success)
+            {
+                loadAndDisplayAlbumCovers(AlphabetOrderStrategy);
+            }
         }
 
         private string getUserFullName()
@@ -107,9 +118,12 @@ namespace FacebookApp
 
         #region Album Related Actions
 
-        private void loadAlbumCovers()
+        private void loadAndDisplayAlbumCovers(Func<Album, long> i_OrderStrategy)
         {
-            foreach (Album album in m_FacebookUser.Albums)
+            clearAlbumCovers();
+
+            IOrderedEnumerable<Album> albumEnumerator = m_FacebookUser.GetSortedAlbums(i_OrderStrategy);
+            foreach(Album album in albumEnumerator)
             {
                 AlbumCover albumCover = new AlbumCover(album.Name, album.PictureAlbumURL, album.Id);
                 flowLayout_albumPhotos.Invoke(new Action(() =>
@@ -119,6 +133,14 @@ namespace FacebookApp
                 }));
                 albumCover.Click += new EventHandler(albumCoverSelected);
             }
+        }
+
+        private void clearAlbumCovers()
+        {
+            flowLayout_albumPhotos.Invoke(new Action(() =>
+            {
+                flowLayout_albumPhotos.Controls.Clear();
+            }));
         }
 
         private void enableSaveAlbumButton(bool i_Value = true)
@@ -170,7 +192,7 @@ namespace FacebookApp
             {
                 label_albumName.Text = album.Name;
                 label_description.Text = album.Description;
-                label_lastUpdated.Text = album.UpdateTime.ToString();
+                label_lastUpdated.Text = album.CreatedTime.ToString();
                 label_numPhotos.Text = album.Count.ToString();
                 label_privacySettings.Text = album.PrivcaySettings;
                 pictureBox_albumCoverPhoto.LoadAsync(album.PictureAlbumURL);
@@ -304,5 +326,30 @@ namespace FacebookApp
         }
 
         #endregion
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public long AlphabetOrderStrategy(Album i_Album)
+        {
+            return i_Album.Name.ToUpper()[0];
+        }
+
+        public long DateOrderStrategy(Album i_Album)
+        {
+            return i_Album.CreatedTime.Value.Ticks;
+        }
+
+        private void orderByDateButton_Click(object sender, EventArgs e)
+        {
+            loadAndDisplayAlbumCovers(DateOrderStrategy);
+        }
+
+        private void orderByAlphabetButton_Click(object sender, EventArgs e)
+        {
+            loadAndDisplayAlbumCovers(AlphabetOrderStrategy);
+        }
     }
 }

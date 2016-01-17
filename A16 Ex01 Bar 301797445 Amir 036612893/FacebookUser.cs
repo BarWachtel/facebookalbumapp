@@ -8,11 +8,13 @@ using System.Threading;
 
 namespace DesignPatternsEx01
 {
+    public delegate void UserLoggedInObserver(bool i_Success);
     public class FacebookUser
     {
         private User m_LoggedInUser;
         private static FacebookUser m_Instance;
         private static object m_InstanceCreationLock = new Object();
+        private UserLoggedInObserver m_UserLoggedInObservers;
 
         private FacebookUser()
         {
@@ -35,7 +37,7 @@ namespace DesignPatternsEx01
             return m_Instance;
         }
 
-        public void Login(Action<bool> i_ActionSuccess)
+        public void Login()
         {
             if (m_LoggedInUser == null)
             {
@@ -49,14 +51,14 @@ namespace DesignPatternsEx01
                         success = true;
                     }
 
-                    i_ActionSuccess(success);
+                    userLoggedInSuccessfully(success);
                 });
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
             }
             else
             {
-                i_ActionSuccess(true);
+                userLoggedInSuccessfully(true);
             }
         }
 
@@ -97,12 +99,17 @@ namespace DesignPatternsEx01
             }
         }
 
-        public FacebookObjectCollection<Album> Albums
+        public IEnumerator<Album> Albums
         {
             get
             {
-                return m_LoggedInUser.Albums;
+                return m_LoggedInUser.Albums.GetEnumerator();
             }
+        }
+
+        public IOrderedEnumerable<Album> GetSortedAlbums(Func<Album, long> i_CompareStrategy)
+        {
+            return m_LoggedInUser.Albums.OrderBy(i_CompareStrategy);
         }
 
         public string FirstName
@@ -130,6 +137,24 @@ namespace DesignPatternsEx01
         public FacebookObjectCollection<Post> Posts
         {
             get { return m_LoggedInUser.Posts; }
+        }
+
+        public void AddLoginObserver(UserLoggedInObserver i_UserLoggedInObserver)
+        {
+            m_UserLoggedInObservers += i_UserLoggedInObserver;
+        }
+
+        public void RemoveLoginObserver(UserLoggedInObserver i_UserLoggedInObserver)
+        {
+            m_UserLoggedInObservers -= i_UserLoggedInObserver;
+        }
+
+        private void userLoggedInSuccessfully(bool i_Success)
+        {
+            if (m_UserLoggedInObservers != null)
+            {
+                m_UserLoggedInObservers.Invoke(i_Success);
+            }
         }
     }
 }
